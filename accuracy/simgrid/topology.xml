@@ -1,0 +1,112 @@
+<?xml version='1.0'?>
+<!DOCTYPE platform SYSTEM "http://simgrid.gforge.inria.fr/simgrid.dtd">
+<platform version="3">
+    <AS  id="AS0"  routing="Full">
+
+        <!-- This is node id #0 -->
+        <host id="south" core="8" power="800000000"/>
+        <!-- This is node id #1 -->
+        <host id="west"  core="8" power="800000000"/>
+        <!-- This is node id #2 -->
+        <host id="north" core="8" power="800000000"/>
+        <!-- This is node id #3 -->
+        <host id="east"   core="8" power="800000000"/>
+
+        <router id="centerSwitch"/>
+
+        <!-- 62500 kB/s = 500 Mbps -->
+        <link id="southlink" bandwidth="62500000"  latency="0.000001" sharing_policy="FULLDUPLEX"/>
+        <link id="westlink"  bandwidth="62500000"   latency="0.000001" sharing_policy="FULLDUPLEX"/>
+        <!-- 125 MB/s = 1 Gbps -->
+        <link id="northlink" bandwidth="125000000" latency="0.000001" sharing_policy="FULLDUPLEX"/>
+        <link id="eastlink"  bandwidth="125000000" latency="0.000001" sharing_policy="FULLDUPLEX"/>
+
+        <!-- To center switch -->
+        <route src="north" dst="centerSwitch" symmetrical="NO">
+            <link_ctn id="northlink" direction="UP"/>
+        </route>
+        <route src="south" dst="centerSwitch" symmetrical="NO">
+            <link_ctn id="southlink" direction="UP"/>
+        </route> 
+        <route src="east" dst="centerSwitch" symmetrical="NO">
+            <link_ctn id="eastlink" direction="UP"/>
+        </route>
+        <route src="west" dst="centerSwitch" symmetrical="NO">
+            <link_ctn id="westlink" direction="UP"/>
+        </route>
+
+        <!-- From center switch -->
+        <route src="centerSwitch" dst="north" symmetrical="NO">
+            <link_ctn id="northlink" direction="DOWN"/>
+        </route>
+        <route src="centerSwitch" dst="south" symmetrical="NO">
+            <link_ctn id="southlink" direction="DOWN"/>
+        </route> 
+        <route src="centerSwitch" dst="east" symmetrical="NO">
+            <link_ctn id="eastlink" direction="DOWN"/>
+        </route>
+        <route src="centerSwitch" dst="west" symmetrical="NO">
+            <link_ctn id="westlink" direction="DOWN"/>
+        </route>
+
+        <!-- From north links -->
+        <route src="north" dst="south" symmetrical="NO">
+            <link_ctn id="northlink" direction="UP"/>
+            <link_ctn id="southlink" direction="DOWN"/>
+        </route>
+        <route src="north" dst="east" symmetrical="NO">
+            <link_ctn id="northlink" direction="UP"/>
+            <link_ctn id="eastlink" direction="DOWN"/>
+        </route>
+        <route src="north" dst="west" symmetrical="NO">
+            <link_ctn id="northlink" direction="UP"/>
+            <link_ctn id="westlink" direction="DOWN"/>
+        </route>
+
+        <!-- To north links -->
+        <route src="south" dst="north" symmetrical="NO">
+            <link_ctn id="southlink" direction="UP"/>
+            <link_ctn id="northlink" direction="DOWN"/>
+        </route>
+        <route src="east" dst="north" symmetrical="NO">
+            <link_ctn id="eastlink" direction="UP"/>
+            <link_ctn id="northlink" direction="DOWN"/>
+        </route>
+        <route src="west" dst="north" symmetrical="NO">
+            <link_ctn id="westlink" direction="UP"/>
+            <link_ctn id="northlink" direction="DOWN"/>
+        </route>
+
+        <!-- From south links -->
+        <route src="south" dst="east" symmetrical="NO">
+            <link_ctn id="southlink" direction="UP"/>
+            <link_ctn id="eastlink" direction="DOWN"/>
+        </route>
+        <route src="south" dst="west" symmetrical="NO">
+            <link_ctn id="southlink" direction="UP"/>
+            <link_ctn id="westlink" direction="DOWN"/>
+        </route>
+
+        <!-- To south links -->
+        <route src="east" dst="south" symmetrical="NO">
+            <link_ctn id="eastlink" direction="UP"/>
+            <link_ctn id="southlink" direction="DOWN"/>
+        </route>
+        <route src="west" dst="south" symmetrical="NO">
+            <link_ctn id="westlink" direction="UP"/>
+            <link_ctn id="southlink" direction="DOWN"/>
+        </route>
+
+        <!-- From east links -->
+        <route src="east" dst="west" symmetrical="NO">
+            <link_ctn id="eastlink" direction="UP"/>
+            <link_ctn id="westlink" direction="DOWN"/>
+        </route>
+
+        <!-- To east links -->
+        <route src="west" dst="east" symmetrical="NO">
+            <link_ctn id="westlink" direction="UP"/>
+            <link_ctn id="eastlink" direction="DOWN"/>
+        </route>
+    </AS>
+</platform>
