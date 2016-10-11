@@ -17,6 +17,7 @@ You can either chose to use the provided JSON files to execute the experiments o
 
 Here is the structure of the Java `src` directory (JSON and CSV files are not shown):
 
+``` txt
 scale
 |
 ├── random_decommissioning_infra_scale
@@ -41,11 +42,11 @@ scale
     ├── instances
     ├── mvm
     └── RandomVMsScale.java
-
+```
 - JSON instances
 - Java classes to execute execute existing JSON instances OR to generate new random instances
 - the files reffering to the non-optimized version of mVM are labelled 'mvm-four' or 'four-steps', where 'single-step' or just 'mVM' refer to the optimized version (MaxBandwidth optimisation).
-
+- BtrPlace corresponds to the 'no-share' model described in the thesis
 
 
 
