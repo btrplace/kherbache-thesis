@@ -62,7 +62,7 @@ To do so, good working examples are given in the Java sources files of the `Scal
 
 The procedure to execute BtrPlace instances in SimGrid is described below:
 
-### SimGrid
+### Get and install SimGrid
 
 ``` bash
 # Get SimGrid, build the correct version 3.13  (01/01/16) and install it into /opt
@@ -88,20 +88,20 @@ make install
 cd ..
 ```
 
-### Compile the custom JSON parser for BtrPlace instances
+### Compile the custom JSON parser for BtrPlace instances and the migration launcher 
 
 ```
-cd accuracy/simgrid/json-parser
+# Clone the repository if you don't have it
+git clone --depth 1 https://github.com/btrplace/kherbache-thesis.git
+
+cd kherbache-thesis/accuracy/simgrid/json-parser
 export LD_LIBRARY_PATH=/opt/json-c/lib:$LD_LIBRARY_PATH
 export C_INCLUDE_PATH=/opt/json-c/include:$C_INCLUDE_PATH
 ldconfig
 make
+
+# Compile the 'migrate_vm' C source code to execute JSON instances using SimGrid
 cd ..
-```
-
-### Compile the `migrate_vm` C source code to execute JSON instances using SimGrid
-
-```
 export LD_LIBRARY_PATH=/opt/simgrid/lib:$LD_LIBRARY_PATH
 export C_INCLUDE_PATH=/opt/simgrid/include:$C_INCLUDE_PATH
 ldconfig
@@ -110,6 +110,10 @@ make test
 ```
 
 ### Run the scenarios (feel free to automate this)
+
+The input JSON instances files are located in the [input](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/input) directory. They can also be retrieved from the [random]((https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/random)) folder (as they are basically the same files --> read the thesis ;-)) OR they can be fully regenerated as mentioned above.
+
+Use the new `migrate_vm` binary to execute the scenarios, like this:
 
 ```
 ./migrate_vm topology.xml results.1.csv ../input/random.1.json
@@ -156,7 +160,7 @@ scale
 └── RandomVMsScale.java
 ```
 
-- The JSON instances are all provided in the `instances` directories.
+- The JSON instances files for each type of experiment are provided in the `instances` directories.
 - The result CSV files will appear into the folders `btrplace` and `mvm`, under directories with the name of the scale factor `x1`, `x2`, etc.
 
 <!-- The files reffering to the non-optimized version of mVM are labelled `mvm-four` (or `four-steps`), where `single-step` or just `mVM` refer to the optimized version (MaxBandwidth optimisation).
@@ -297,14 +301,9 @@ Generally the script `/path/to/sleeping-script` contains an *infinite sleeping l
 
 ### Retrieve deployments scripts
 
-You need to retrieve the deployments scripts located in the local [`utils/scripts-g5k` subfolder](https://github.com/btrplace/migrations-UCC-15/tree/master/utils/scripts-g5k).
+You need to retrieve the deployments scripts located in the local [`utils/scripts-g5k` subfolder](https://github.com/btrplace/kherbache-thesis/tree/master/utils/scripts-g5k).
 
-Alternatively, you can retrieve them from the [original repository](https://github.com/vincent-k/scripts-g5k) like this:
-
-``` shell
-git clone -b ucc-15 --single-branch --depth 1 https://github.com/vincent-k/scripts-g5k.git
-cd scripts-g5k
-```
+Alternatively, you can retrieve them from the [original repository](https://github.com/vincent-k/scripts-g5k) in a most recent version with more features. However the scripts provided in this repository are cleaned and ready to use so we strongly recommand using them.
 
 **Note**: For the remaining steps, we consider that `scripts-g5k` is your **working directory**.
 
@@ -390,7 +389,7 @@ cd ../
 Then, retrieve the g5k executor from [this repository](https://github.com/btrplace/g5k-executor) and compile it:
 
 ``` shell
-git clone -b ucc-15 --single-branch --depth 1 https://github.com/btrplace/g5k-executor.git
+git clone --depth 1 https://github.com/btrplace/g5k-executor.git
 cd g5k-executor
 git checkout f7679631d48e1f3d54d5b84bca44b5a4c075649e
 mvn -Dmaven.test.skip=true package
