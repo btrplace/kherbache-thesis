@@ -179,7 +179,7 @@ MAVEN_OPTS="-server -Xmx2G -Xms2G" mvn "-Dtest=**/scale/RandomInfraScale#run_mvm
 MAVEN_OPTS="-server -Xmx2G -Xms2G" mvn "-Dtest=**/scale/RandomVMsScale#run_mvm+run_btrplace" compiler:testCompile surefire:test
 ```
 
-# Grid'5000 experiments
+# Real experiments (Grid'5000)
 
 ## Setup the environment
 
