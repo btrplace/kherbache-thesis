@@ -1,4 +1,4 @@
-package org.btrplace.scheduler.choco;
+package org.btrplace.scheduler.kherbacheThesis;
 
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
@@ -8,7 +8,6 @@ import org.btrplace.json.model.InstanceConverter;
 import org.btrplace.model.*;
 import org.btrplace.model.constraint.Fence;
 import org.btrplace.model.constraint.MinMTTR;
-import org.btrplace.model.constraint.Offline;
 import org.btrplace.model.constraint.SatConstraint;
 import org.btrplace.model.constraint.migration.MinMTTRMig;
 import org.btrplace.model.constraint.migration.Sync;
@@ -35,69 +34,69 @@ import java.util.zip.GZIPInputStream;
 /**
  * @author Vincent Kherbache
  */
-public class RandomDecommissioningVMsScale {
+public class RandomVMsScale {
 
     String path = new File("").getAbsolutePath() +
-            "/choco/src/test/java/org/btrplace/scheduler/choco/random_decommissioning_vms_scale/";
+            "/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale/random_vms_scale/";
 
     @Test
     public void go_mvm() throws Exception {
 
-        for (int in=1; in<101; in++) {
+        for (int in=59; in<69; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
             int nb = 10;
-            if (in == 1) nb+=10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_plan("instances/x1/instance_" + in + ".json");
-                if (ss != null) { res.append("1;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
-                else { break; }
-            }
-            if (ss != null) saveToCSV("mvm-four/x1/four-steps_"+in+".csv", res);
-        }
-        for (int in=1; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
-            int nb = 10;
+            if (in == 59) nb+=2;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
                 ss = schedule_plan("instances/x2/instance_" + in + ".json");
                 if (ss != null) { res.append("2;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
                 else { break; }
             }
-            if (ss != null) saveToCSV("mvm-four/x2/four-steps_"+in+".csv", res);
+            if (ss != null) saveToCSV("mvm/x2/single-step_"+in+".csv", res);
         }
         for (int in=1; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
             int nb = 10;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
-                ss = schedule_plan("instances/x4/instance_" + in + ".json");
+                ss = schedule_plan("instances/x2/instance_slow_" + in + ".json");
+                if (ss != null) { res.append("2;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
+                else { break; }
+            }
+            if (ss != null) saveToCSV("mvm/x2/single-step_slow_"+in+".csv", res);
+        }
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
+            int nb = 10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_plan("instances/x4/instance_slow_" + in + ".json");
                 if (ss != null) { res.append("4;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
                 else { break; }
             }
-            if (ss != null) saveToCSV("mvm-four/x4/four-steps_"+in+".csv", res);
+            if (ss != null) saveToCSV("mvm/x4/single-step_slow_"+in+".csv", res);
         }
         for (int in=1; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
             int nb = 10;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
-                ss = schedule_plan("instances/x8/instance_" + in + ".json");
+                ss = schedule_plan("instances/x8/instance_slow_" + in + ".json");
                 if (ss != null) { res.append("8;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
                 else { break; }
             }
-            if (ss != null) saveToCSV("mvm-four/x8/four-steps_"+in+".csv", res);
+            if (ss != null) saveToCSV("mvm/x8/single-step_slow_"+in+".csv", res);
         }
         for (int in=1; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
             int nb = 10;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
-                ss = schedule_plan("instances/x18/instance_" + in + ".json");
-                if (ss != null) { res.append("18;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
-                else { break; }
+                ss = schedule_plan("instances/x18/instance_slow_" + in + ".json");
+                if (ss != null) { res.append("18;" + duration(ss) + ";mVM;" + planDuration(ss) + "\n"); }
+                else { i = nb; }
             }
-            if (ss != null) saveToCSV("mvm-four/x18/four-steps_"+in+".csv", res);
+            if (ss != null) saveToCSV("mvm/x18/single-step_"+in+".csv", res);
         }
     }
 
@@ -166,50 +165,50 @@ public class RandomDecommissioningVMsScale {
             if (in == 1) nb+=10;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x1/instance_" + in + ".json");
+                ss = schedule_btrplace_plan("instances/x1/instance_slow_" + in + ".json");
                 if (ss != null) res.append("1;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
             }
-            if (ss != null) saveToCSV("btrplace/x1/no-share_"+in+".csv", res);
+            if (ss != null) saveToCSV("btrplace/x1/no-share_slow_"+in+".csv", res);
         }
         for (int in=51; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
             int nb = 10;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x2/instance_" + in + ".json");
+                ss = schedule_btrplace_plan("instances/x2/instance_slow_" + in + ".json");
                 if (ss != null) res.append("2;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
             }
-            if (ss != null) saveToCSV("btrplace/x2/no-share_"+in+".csv", res);
+            if (ss != null) saveToCSV("btrplace/x2/no-share_slow_"+in+".csv", res);
         }
         for (int in=51; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
             int nb = 10;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x4/instance_" + in + ".json");
+                ss = schedule_btrplace_plan("instances/x4/instance_slow_" + in + ".json");
                 if (ss != null) res.append("4;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
             }
-            if (ss != null) saveToCSV("btrplace/x4/no-share_"+in+".csv", res);
+            if (ss != null) saveToCSV("btrplace/x4/no-share_slow_"+in+".csv", res);
         }
         for (int in=51; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
             int nb = 10;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x8/instance_" + in + ".json");
+                ss = schedule_btrplace_plan("instances/x8/instance_slow_" + in + ".json");
                 if (ss != null) res.append("8;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
             }
-            if (ss != null) saveToCSV("btrplace/x8/no-share_"+in+".csv", res);
+            if (ss != null) saveToCSV("btrplace/x8/no-share_slow_"+in+".csv", res);
         }
         for (int in=51; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
             int nb = 10;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x18/instance_" + in + ".json");
+                ss = schedule_btrplace_plan("instances/x18/instance_slow_" + in + ".json");
                 if (ss != null) res.append("18;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
             }
-            if (ss != null) saveToCSV("btrplace/x18/no-share_"+in+".csv", res);
+            if (ss != null) saveToCSV("btrplace/x18/no-share_slow_"+in+".csv", res);
         }
     }
 
@@ -222,6 +221,23 @@ public class RandomDecommissioningVMsScale {
             generate_plan_x8(i);
             generate_plan_x18(i);
             //generate_plan_x36(i);
+        }
+    }
+
+    @Test
+    public void go_ninja() throws Exception {
+
+        //generate_plan_x18(0);
+
+        for (int in=1; in<51; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x18/instance_" + in + ".json");
+                if (ss != null) res.append("18;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x18/no-share_"+in+".csv", res);
         }
     }
 
@@ -239,6 +255,8 @@ public class RandomDecommissioningVMsScale {
 
         ReconfigurationPlan p; // = loadPlanFromJSON("plan_1.json");
         Instance i = loadInstanceFromJSON(instanceName);
+        
+        //Instance i = new Instance(ii.getModel(), ii.getSatConstraints(), new MinMTTR());
 
         if (i == null) return null;
 
@@ -274,7 +292,7 @@ public class RandomDecommissioningVMsScale {
         Instance i = loadInstanceFromJSON(instanceName);
 
         if (i == null) return null;
-
+        
         // Synchronise all the migrations
         i.getSatConstraints().add(new Sync(i.getModel().getMapping().getAllVMs()));
 
@@ -358,17 +376,17 @@ public class RandomDecommissioningVMsScale {
         int memDstNode = 16, cpuDstNode = 4;
 
         // Maintain a list of actual nodes resources
-        List<Integer> srcNodesRAM = new ArrayList<>();
-        List<Integer> srcNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbSrcNodes; i++) {
-            srcNodesRAM.add(memSrcNode);
-            srcNodesCPU.add(cpuSrcNode);
-        }
-        List<Integer> dstNodesRAM = new ArrayList<>();
-        List<Integer> dstNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbDstNodes; i++) {
-            dstNodesRAM.add(memDstNode);
-            dstNodesCPU.add(cpuDstNode);
+        List<Integer> nodesRAM = new ArrayList<>();
+        List<Integer> nodesCPU = new ArrayList<>();
+        for (int i=0; i<nbSrcNodes+nbDstNodes; i++) {
+            if (i<nbSrcNodes) {
+                nodesRAM.add(i, memSrcNode);
+                nodesCPU.add(i, cpuSrcNode);
+            }
+            else {
+                nodesRAM.add(i, memDstNode);
+                nodesCPU.add(i, cpuDstNode);
+            }
         }
 
         // Set memoryUsed and dirtyRate (for all VMs)
@@ -381,10 +399,12 @@ public class RandomDecommissioningVMsScale {
         Model mo = new DefaultModel();
         Mapping ma = mo.getMapping();
 
-        // Create online source nodes and offline destination nodes
-        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>();
+        // Create online source nodes and destination nodes
+        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>(), nodes = new ArrayList<>();
         for (int i=0; i<nbSrcNodes; i++) { srcNodes.add(mo.newNode()); ma.addOnlineNode(srcNodes.get(i)); }
-        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOfflineNode(dstNodes.get(i)); }
+        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOnlineNode(dstNodes.get(i)); }
+        for (Node n : srcNodes) { nodes.add(srcNodes.indexOf(n), n); }
+        for (Node n : dstNodes) { nodes.add(srcNodes.size() + dstNodes.indexOf(n), n); }
 
         // Set boot and shutdown time
         for (Node n : dstNodes) { mo.getAttributes().put(n, "boot", 120); /*~2 minutes to boot*/ }
@@ -400,8 +420,8 @@ public class RandomDecommissioningVMsScale {
         mo.attach(rcCPU);
         for (Node n : srcNodes) { rcMem.setCapacity(n, memSrcNode); rcCPU.setCapacity(n, cpuSrcNode); }
         for (Node n : dstNodes) { rcMem.setCapacity(n, memDstNode); rcCPU.setCapacity(n, cpuDstNode); }
-        
-        // Do a random placement while being fair with VM templates
+
+        // Do a random global placement while being fair with VM templates
         java.util.Random r = new java.util.Random();
         for (int i=0; i<nbVMs; i+=4) {
             Node n; VM v;
@@ -413,11 +433,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl1MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl2MemUsed);
@@ -426,11 +446,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl2MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl3MemUsed);
@@ -439,11 +459,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl3MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl4MemUsed);
@@ -452,11 +472,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl4MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
         }
 
         // Add a NetworkView view
@@ -483,20 +503,24 @@ public class RandomDecommissioningVMsScale {
         ps.getTransitionFactory().remove(ps.getTransitionFactory().getBuilder(VMState.RUNNING, VMState.RUNNING));
         ps.getTransitionFactory().add(new MigrateVMTransition.Builder());
 
-        // Migrate all VMs to random destination nodes
+        // Migrate all VMs to random nodes
         List<SatConstraint> cstrs = new ArrayList<>();
         for (int i=0; i<nbVMs; i++) {
             Node n;
-            do { n = dstNodes.get(r.nextInt(dstNodes.size())); }
-            while (rcMem.getConsumption(vms.get(i)) > dstNodesRAM.get(dstNodes.indexOf(n)) ||
-                    rcCPU.getConsumption(vms.get(i)) > dstNodesCPU.get(dstNodes.indexOf(n)));
-            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
-            dstNodesRAM.set(dstNodes.indexOf(n), dstNodesRAM.get(dstNodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
-            dstNodesCPU.set(dstNodes.indexOf(n), dstNodesCPU.get(dstNodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
-        }
 
-        // Shutdown source nodes
-        for (Node n : srcNodes) { cstrs.add(new Offline(n)); }
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (n.id() == ma.getVMLocation(vms.get(i)).id() ||
+                    rcMem.getConsumption(vms.get(i)) > nodesRAM.get(nodes.indexOf(n)) ||
+                    rcCPU.getConsumption(vms.get(i)) > nodesCPU.get(nodes.indexOf(n)));
+            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
+
+            nodesRAM.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesRAM.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesCPU.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcCPU.getConsumption(vms.get(i)));
+        }
 
         // Set a custom objective
         DefaultChocoScheduler sc = new DefaultChocoScheduler(ps);
@@ -511,6 +535,7 @@ public class RandomDecommissioningVMsScale {
             }
         } catch(Exception e) {
             e.printStackTrace();
+            saveInstanceToJSON(i, "instances/x1/instance_slow_" + nb + ".json");
         }
     }
 
@@ -528,17 +553,17 @@ public class RandomDecommissioningVMsScale {
         int memDstNode = 32, cpuDstNode = 8;
 
         // Maintain a list of actual nodes resources
-        List<Integer> srcNodesRAM = new ArrayList<>();
-        List<Integer> srcNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbSrcNodes; i++) {
-            srcNodesRAM.add(memSrcNode);
-            srcNodesCPU.add(cpuSrcNode);
-        }
-        List<Integer> dstNodesRAM = new ArrayList<>();
-        List<Integer> dstNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbDstNodes; i++) {
-            dstNodesRAM.add(memDstNode);
-            dstNodesCPU.add(cpuDstNode);
+        List<Integer> nodesRAM = new ArrayList<>();
+        List<Integer> nodesCPU = new ArrayList<>();
+        for (int i=0; i<nbSrcNodes+nbDstNodes; i++) {
+            if (i<nbSrcNodes) {
+                nodesRAM.add(i, memSrcNode);
+                nodesCPU.add(i, cpuSrcNode);
+            }
+            else {
+                nodesRAM.add(i, memDstNode);
+                nodesCPU.add(i, cpuDstNode);
+            }
         }
 
         // Set memoryUsed and dirtyRate (for all VMs)
@@ -551,10 +576,12 @@ public class RandomDecommissioningVMsScale {
         Model mo = new DefaultModel();
         Mapping ma = mo.getMapping();
 
-        // Create online source nodes and offline destination nodes
-        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>();
+        // Create online source nodes and destination nodes
+        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>(), nodes = new ArrayList<>();
         for (int i=0; i<nbSrcNodes; i++) { srcNodes.add(mo.newNode()); ma.addOnlineNode(srcNodes.get(i)); }
-        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOfflineNode(dstNodes.get(i)); }
+        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOnlineNode(dstNodes.get(i)); }
+        for (Node n : srcNodes) { nodes.add(srcNodes.indexOf(n), n); }
+        for (Node n : dstNodes) { nodes.add(srcNodes.size() + dstNodes.indexOf(n), n); }
 
         // Set boot and shutdown time
         for (Node n : dstNodes) { mo.getAttributes().put(n, "boot", 120); /*~2 minutes to boot*/ }
@@ -571,7 +598,7 @@ public class RandomDecommissioningVMsScale {
         for (Node n : srcNodes) { rcMem.setCapacity(n, memSrcNode); rcCPU.setCapacity(n, cpuSrcNode); }
         for (Node n : dstNodes) { rcMem.setCapacity(n, memDstNode); rcCPU.setCapacity(n, cpuDstNode); }
 
-        // Do a random placement while being fair with VM templates
+        // Do a random global placement while being fair with VM templates
         java.util.Random r = new java.util.Random();
         for (int i=0; i<nbVMs; i+=4) {
             Node n; VM v;
@@ -583,11 +610,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl1MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl2MemUsed);
@@ -596,11 +623,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl2MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl3MemUsed);
@@ -609,11 +636,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl3MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl4MemUsed);
@@ -622,11 +649,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl4MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
         }
 
         // Add a NetworkView view
@@ -653,20 +680,24 @@ public class RandomDecommissioningVMsScale {
         ps.getTransitionFactory().remove(ps.getTransitionFactory().getBuilder(VMState.RUNNING, VMState.RUNNING));
         ps.getTransitionFactory().add(new MigrateVMTransition.Builder());
 
-        // Migrate all VMs to random destination nodes
+        // Migrate all VMs to random nodes
         List<SatConstraint> cstrs = new ArrayList<>();
         for (int i=0; i<nbVMs; i++) {
             Node n;
-            do { n = dstNodes.get(r.nextInt(dstNodes.size())); }
-            while (rcMem.getConsumption(vms.get(i)) > dstNodesRAM.get(dstNodes.indexOf(n)) ||
-                    rcCPU.getConsumption(vms.get(i)) > dstNodesCPU.get(dstNodes.indexOf(n)));
-            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
-            dstNodesRAM.set(dstNodes.indexOf(n), dstNodesRAM.get(dstNodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
-            dstNodesCPU.set(dstNodes.indexOf(n), dstNodesCPU.get(dstNodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
-        }
 
-        // Shutdown source nodes
-        for (Node n : srcNodes) { cstrs.add(new Offline(n)); }
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (n.id() == ma.getVMLocation(vms.get(i)).id() ||
+                    rcMem.getConsumption(vms.get(i)) > nodesRAM.get(nodes.indexOf(n)) ||
+                    rcCPU.getConsumption(vms.get(i)) > nodesCPU.get(nodes.indexOf(n)));
+            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
+
+            nodesRAM.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesRAM.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesCPU.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcCPU.getConsumption(vms.get(i)));
+        }
 
         // Set a custom objective
         DefaultChocoScheduler sc = new DefaultChocoScheduler(ps);
@@ -681,6 +712,7 @@ public class RandomDecommissioningVMsScale {
             }
         } catch(Exception e) {
             e.printStackTrace();
+            saveInstanceToJSON(i, "instances/x2/instance_slow_" + nb + ".json");
         }
     }
 
@@ -698,17 +730,17 @@ public class RandomDecommissioningVMsScale {
         int memDstNode = 64, cpuDstNode = 16;
 
         // Maintain a list of actual nodes resources
-        List<Integer> srcNodesRAM = new ArrayList<>();
-        List<Integer> srcNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbSrcNodes; i++) {
-            srcNodesRAM.add(memSrcNode);
-            srcNodesCPU.add(cpuSrcNode);
-        }
-        List<Integer> dstNodesRAM = new ArrayList<>();
-        List<Integer> dstNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbDstNodes; i++) {
-            dstNodesRAM.add(memDstNode);
-            dstNodesCPU.add(cpuDstNode);
+        List<Integer> nodesRAM = new ArrayList<>();
+        List<Integer> nodesCPU = new ArrayList<>();
+        for (int i=0; i<nbSrcNodes+nbDstNodes; i++) {
+            if (i<nbSrcNodes) {
+                nodesRAM.add(i, memSrcNode);
+                nodesCPU.add(i, cpuSrcNode);
+            }
+            else {
+                nodesRAM.add(i, memDstNode);
+                nodesCPU.add(i, cpuDstNode);
+            }
         }
 
         // Set memoryUsed and dirtyRate (for all VMs)
@@ -721,10 +753,12 @@ public class RandomDecommissioningVMsScale {
         Model mo = new DefaultModel();
         Mapping ma = mo.getMapping();
 
-        // Create online source nodes and offline destination nodes
-        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>();
+        // Create online source nodes and destination nodes
+        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>(), nodes = new ArrayList<>();
         for (int i=0; i<nbSrcNodes; i++) { srcNodes.add(mo.newNode()); ma.addOnlineNode(srcNodes.get(i)); }
-        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOfflineNode(dstNodes.get(i)); }
+        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOnlineNode(dstNodes.get(i)); }
+        for (Node n : srcNodes) { nodes.add(srcNodes.indexOf(n), n); }
+        for (Node n : dstNodes) { nodes.add(srcNodes.size() + dstNodes.indexOf(n), n); }
 
         // Set boot and shutdown time
         for (Node n : dstNodes) { mo.getAttributes().put(n, "boot", 120); /*~2 minutes to boot*/ }
@@ -741,7 +775,7 @@ public class RandomDecommissioningVMsScale {
         for (Node n : srcNodes) { rcMem.setCapacity(n, memSrcNode); rcCPU.setCapacity(n, cpuSrcNode); }
         for (Node n : dstNodes) { rcMem.setCapacity(n, memDstNode); rcCPU.setCapacity(n, cpuDstNode); }
 
-        // Do a random placement while being fair with VM templates
+        // Do a random global placement while being fair with VM templates
         java.util.Random r = new java.util.Random();
         for (int i=0; i<nbVMs; i+=4) {
             Node n; VM v;
@@ -753,11 +787,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl1MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl2MemUsed);
@@ -766,11 +800,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl2MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl3MemUsed);
@@ -779,11 +813,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl3MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl4MemUsed);
@@ -792,11 +826,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl4MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
         }
 
         // Add a NetworkView view
@@ -823,20 +857,24 @@ public class RandomDecommissioningVMsScale {
         ps.getTransitionFactory().remove(ps.getTransitionFactory().getBuilder(VMState.RUNNING, VMState.RUNNING));
         ps.getTransitionFactory().add(new MigrateVMTransition.Builder());
 
-        // Migrate all VMs to random destination nodes
+        // Migrate all VMs to random nodes
         List<SatConstraint> cstrs = new ArrayList<>();
         for (int i=0; i<nbVMs; i++) {
             Node n;
-            do { n = dstNodes.get(r.nextInt(dstNodes.size())); }
-            while (rcMem.getConsumption(vms.get(i)) > dstNodesRAM.get(dstNodes.indexOf(n)) ||
-                    rcCPU.getConsumption(vms.get(i)) > dstNodesCPU.get(dstNodes.indexOf(n)));
-            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
-            dstNodesRAM.set(dstNodes.indexOf(n), dstNodesRAM.get(dstNodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
-            dstNodesCPU.set(dstNodes.indexOf(n), dstNodesCPU.get(dstNodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
-        }
 
-        // Shutdown source nodes
-        for (Node n : srcNodes) { cstrs.add(new Offline(n)); }
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (n.id() == ma.getVMLocation(vms.get(i)).id() ||
+                    rcMem.getConsumption(vms.get(i)) > nodesRAM.get(nodes.indexOf(n)) ||
+                    rcCPU.getConsumption(vms.get(i)) > nodesCPU.get(nodes.indexOf(n)));
+            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
+
+            nodesRAM.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesRAM.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesCPU.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcCPU.getConsumption(vms.get(i)));
+        }
 
         // Set a custom objective
         DefaultChocoScheduler sc = new DefaultChocoScheduler(ps);
@@ -851,6 +889,7 @@ public class RandomDecommissioningVMsScale {
             }
         } catch(Exception e) {
             e.printStackTrace();
+            saveInstanceToJSON(i, "instances/x4/instance_slow_" + nb + ".json");
         }
     }
 
@@ -868,17 +907,17 @@ public class RandomDecommissioningVMsScale {
         int memDstNode = 128, cpuDstNode = 32;
 
         // Maintain a list of actual nodes resources
-        List<Integer> srcNodesRAM = new ArrayList<>();
-        List<Integer> srcNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbSrcNodes; i++) {
-            srcNodesRAM.add(memSrcNode);
-            srcNodesCPU.add(cpuSrcNode);
-        }
-        List<Integer> dstNodesRAM = new ArrayList<>();
-        List<Integer> dstNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbDstNodes; i++) {
-            dstNodesRAM.add(memDstNode);
-            dstNodesCPU.add(cpuDstNode);
+        List<Integer> nodesRAM = new ArrayList<>();
+        List<Integer> nodesCPU = new ArrayList<>();
+        for (int i=0; i<nbSrcNodes+nbDstNodes; i++) {
+            if (i<nbSrcNodes) {
+                nodesRAM.add(i, memSrcNode);
+                nodesCPU.add(i, cpuSrcNode);
+            }
+            else {
+                nodesRAM.add(i, memDstNode);
+                nodesCPU.add(i, cpuDstNode);
+            }
         }
 
         // Set memoryUsed and dirtyRate (for all VMs)
@@ -891,10 +930,12 @@ public class RandomDecommissioningVMsScale {
         Model mo = new DefaultModel();
         Mapping ma = mo.getMapping();
 
-        // Create online source nodes and offline destination nodes
-        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>();
+        // Create online source nodes and destination nodes
+        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>(), nodes = new ArrayList<>();
         for (int i=0; i<nbSrcNodes; i++) { srcNodes.add(mo.newNode()); ma.addOnlineNode(srcNodes.get(i)); }
-        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOfflineNode(dstNodes.get(i)); }
+        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOnlineNode(dstNodes.get(i)); }
+        for (Node n : srcNodes) { nodes.add(srcNodes.indexOf(n), n); }
+        for (Node n : dstNodes) { nodes.add(srcNodes.size() + dstNodes.indexOf(n), n); }
 
         // Set boot and shutdown time
         for (Node n : dstNodes) { mo.getAttributes().put(n, "boot", 120); /*~2 minutes to boot*/ }
@@ -911,7 +952,7 @@ public class RandomDecommissioningVMsScale {
         for (Node n : srcNodes) { rcMem.setCapacity(n, memSrcNode); rcCPU.setCapacity(n, cpuSrcNode); }
         for (Node n : dstNodes) { rcMem.setCapacity(n, memDstNode); rcCPU.setCapacity(n, cpuDstNode); }
 
-        // Do a random placement while being fair with VM templates
+        // Do a random global placement while being fair with VM templates
         java.util.Random r = new java.util.Random();
         for (int i=0; i<nbVMs; i+=4) {
             Node n; VM v;
@@ -923,11 +964,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl1MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl2MemUsed);
@@ -936,11 +977,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl2MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl3MemUsed);
@@ -949,11 +990,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl3MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl4MemUsed);
@@ -962,11 +1003,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl4MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
         }
 
         // Add a NetworkView view
@@ -993,20 +1034,24 @@ public class RandomDecommissioningVMsScale {
         ps.getTransitionFactory().remove(ps.getTransitionFactory().getBuilder(VMState.RUNNING, VMState.RUNNING));
         ps.getTransitionFactory().add(new MigrateVMTransition.Builder());
 
-        // Migrate all VMs to random destination nodes
+        // Migrate all VMs to random nodes
         List<SatConstraint> cstrs = new ArrayList<>();
         for (int i=0; i<nbVMs; i++) {
             Node n;
-            do { n = dstNodes.get(r.nextInt(dstNodes.size())); }
-            while (rcMem.getConsumption(vms.get(i)) > dstNodesRAM.get(dstNodes.indexOf(n)) ||
-                    rcCPU.getConsumption(vms.get(i)) > dstNodesCPU.get(dstNodes.indexOf(n)));
-            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
-            dstNodesRAM.set(dstNodes.indexOf(n), dstNodesRAM.get(dstNodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
-            dstNodesCPU.set(dstNodes.indexOf(n), dstNodesCPU.get(dstNodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
-        }
 
-        // Shutdown source nodes
-        for (Node n : srcNodes) { cstrs.add(new Offline(n)); }
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (n.id() == ma.getVMLocation(vms.get(i)).id() ||
+                    rcMem.getConsumption(vms.get(i)) > nodesRAM.get(nodes.indexOf(n)) ||
+                    rcCPU.getConsumption(vms.get(i)) > nodesCPU.get(nodes.indexOf(n)));
+            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
+
+            nodesRAM.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesRAM.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesCPU.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcCPU.getConsumption(vms.get(i)));
+        }
 
         // Set a custom objective
         DefaultChocoScheduler sc = new DefaultChocoScheduler(ps);
@@ -1021,6 +1066,7 @@ public class RandomDecommissioningVMsScale {
             }
         } catch(Exception e) {
             e.printStackTrace();
+            saveInstanceToJSON(i, "instances/x8/instance_slow_" + nb + ".json");
         }
     }
 
@@ -1038,17 +1084,17 @@ public class RandomDecommissioningVMsScale {
         int memDstNode = 300, cpuDstNode = 72;
 
         // Maintain a list of actual nodes resources
-        List<Integer> srcNodesRAM = new ArrayList<>();
-        List<Integer> srcNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbSrcNodes; i++) {
-            srcNodesRAM.add(memSrcNode);
-            srcNodesCPU.add(cpuSrcNode);
-        }
-        List<Integer> dstNodesRAM = new ArrayList<>();
-        List<Integer> dstNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbDstNodes; i++) {
-            dstNodesRAM.add(memDstNode);
-            dstNodesCPU.add(cpuDstNode);
+        List<Integer> nodesRAM = new ArrayList<>();
+        List<Integer> nodesCPU = new ArrayList<>();
+        for (int i=0; i<nbSrcNodes+nbDstNodes; i++) {
+            if (i<nbSrcNodes) {
+                nodesRAM.add(i, memSrcNode);
+                nodesCPU.add(i, cpuSrcNode);
+            }
+            else {
+                nodesRAM.add(i, memDstNode);
+                nodesCPU.add(i, cpuDstNode);
+            }
         }
 
         // Set memoryUsed and dirtyRate (for all VMs)
@@ -1061,10 +1107,12 @@ public class RandomDecommissioningVMsScale {
         Model mo = new DefaultModel();
         Mapping ma = mo.getMapping();
 
-        // Create online source nodes and offline destination nodes
-        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>();
+        // Create online source nodes and destination nodes
+        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>(), nodes = new ArrayList<>();
         for (int i=0; i<nbSrcNodes; i++) { srcNodes.add(mo.newNode()); ma.addOnlineNode(srcNodes.get(i)); }
-        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOfflineNode(dstNodes.get(i)); }
+        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOnlineNode(dstNodes.get(i)); }
+        for (Node n : srcNodes) { nodes.add(srcNodes.indexOf(n), n); }
+        for (Node n : dstNodes) { nodes.add(srcNodes.size() + dstNodes.indexOf(n), n); }
 
         // Set boot and shutdown time
         for (Node n : dstNodes) { mo.getAttributes().put(n, "boot", 120); /*~2 minutes to boot*/ }
@@ -1081,7 +1129,7 @@ public class RandomDecommissioningVMsScale {
         for (Node n : srcNodes) { rcMem.setCapacity(n, memSrcNode); rcCPU.setCapacity(n, cpuSrcNode); }
         for (Node n : dstNodes) { rcMem.setCapacity(n, memDstNode); rcCPU.setCapacity(n, cpuDstNode); }
 
-        // Do a random placement while being fair with VM templates
+        // Do a random global placement while being fair with VM templates
         java.util.Random r = new java.util.Random();
         for (int i=0; i<nbVMs; i+=4) {
             Node n; VM v;
@@ -1093,11 +1141,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl1MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl2MemUsed);
@@ -1106,11 +1154,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl2MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl3MemUsed);
@@ -1119,11 +1167,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl3MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl4MemUsed);
@@ -1132,11 +1180,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl4MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
         }
 
         // Add a NetworkView view
@@ -1163,20 +1211,24 @@ public class RandomDecommissioningVMsScale {
         ps.getTransitionFactory().remove(ps.getTransitionFactory().getBuilder(VMState.RUNNING, VMState.RUNNING));
         ps.getTransitionFactory().add(new MigrateVMTransition.Builder());
 
-        // Migrate all VMs to random destination nodes
+        // Migrate all VMs to random nodes
         List<SatConstraint> cstrs = new ArrayList<>();
         for (int i=0; i<nbVMs; i++) {
             Node n;
-            do { n = dstNodes.get(r.nextInt(dstNodes.size())); }
-            while (rcMem.getConsumption(vms.get(i)) > dstNodesRAM.get(dstNodes.indexOf(n)) ||
-                    rcCPU.getConsumption(vms.get(i)) > dstNodesCPU.get(dstNodes.indexOf(n)));
-            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
-            dstNodesRAM.set(dstNodes.indexOf(n), dstNodesRAM.get(dstNodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
-            dstNodesCPU.set(dstNodes.indexOf(n), dstNodesCPU.get(dstNodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
-        }
 
-        // Shutdown source nodes
-        for (Node n : srcNodes) { cstrs.add(new Offline(n)); }
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (n.id() == ma.getVMLocation(vms.get(i)).id() ||
+                    rcMem.getConsumption(vms.get(i)) > nodesRAM.get(nodes.indexOf(n)) ||
+                    rcCPU.getConsumption(vms.get(i)) > nodesCPU.get(nodes.indexOf(n)));
+            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
+
+            nodesRAM.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesRAM.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesCPU.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcCPU.getConsumption(vms.get(i)));
+        }
 
         // Set a custom objective
         DefaultChocoScheduler sc = new DefaultChocoScheduler(ps);
@@ -1191,6 +1243,7 @@ public class RandomDecommissioningVMsScale {
             }
         } catch(Exception e) {
             e.printStackTrace();
+            saveInstanceToJSON(i, "instances/x18/instance_slow_" + nb + ".json");
         }
     }
 
@@ -1209,17 +1262,17 @@ public class RandomDecommissioningVMsScale {
         int memDstNode = 600, cpuDstNode = 144;
 
         // Maintain a list of actual nodes resources
-        List<Integer> srcNodesRAM = new ArrayList<>();
-        List<Integer> srcNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbSrcNodes; i++) {
-            srcNodesRAM.add(memSrcNode);
-            srcNodesCPU.add(cpuSrcNode);
-        }
-        List<Integer> dstNodesRAM = new ArrayList<>();
-        List<Integer> dstNodesCPU = new ArrayList<>();
-        for (int i=0; i<nbDstNodes; i++) {
-            dstNodesRAM.add(memDstNode);
-            dstNodesCPU.add(cpuDstNode);
+        List<Integer> nodesRAM = new ArrayList<>();
+        List<Integer> nodesCPU = new ArrayList<>();
+        for (int i=0; i<nbSrcNodes+nbDstNodes; i++) {
+            if (i<nbSrcNodes) {
+                nodesRAM.add(i, memSrcNode);
+                nodesCPU.add(i, cpuSrcNode);
+            }
+            else {
+                nodesRAM.add(i, memDstNode);
+                nodesCPU.add(i, cpuDstNode);
+            }
         }
 
         // Set memoryUsed and dirtyRate (for all VMs)
@@ -1232,10 +1285,12 @@ public class RandomDecommissioningVMsScale {
         Model mo = new DefaultModel();
         Mapping ma = mo.getMapping();
 
-        // Create online source nodes and offline destination nodes
-        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>();
+        // Create online source nodes and destination nodes
+        List<Node> srcNodes = new ArrayList<>(), dstNodes = new ArrayList<>(), nodes = new ArrayList<>();
         for (int i=0; i<nbSrcNodes; i++) { srcNodes.add(mo.newNode()); ma.addOnlineNode(srcNodes.get(i)); }
-        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOfflineNode(dstNodes.get(i)); }
+        for (int i=0; i<nbDstNodes; i++) { dstNodes.add(mo.newNode()); ma.addOnlineNode(dstNodes.get(i)); }
+        for (Node n : srcNodes) { nodes.add(srcNodes.indexOf(n), n); }
+        for (Node n : dstNodes) { nodes.add(srcNodes.size() + dstNodes.indexOf(n), n); }
 
         // Set boot and shutdown time
         for (Node n : dstNodes) { mo.getAttributes().put(n, "boot", 120); /*~2 minutes to boot*/ }
@@ -1252,7 +1307,7 @@ public class RandomDecommissioningVMsScale {
         for (Node n : srcNodes) { rcMem.setCapacity(n, memSrcNode); rcCPU.setCapacity(n, cpuSrcNode); }
         for (Node n : dstNodes) { rcMem.setCapacity(n, memDstNode); rcCPU.setCapacity(n, cpuDstNode); }
 
-        // Do a random placement while being fair with VM templates
+        // Do a random global placement while being fair with VM templates
         java.util.Random r = new java.util.Random();
         for (int i=0; i<nbVMs; i+=4) {
             Node n; VM v;
@@ -1264,11 +1319,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl1MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl2MemUsed);
@@ -1277,11 +1332,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl2MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl3MemUsed);
@@ -1290,11 +1345,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl3MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl1);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl1 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl1 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
 
             v = mo.newVM(); vms.add(v);
             mo.getAttributes().put(v, "memUsed", tpl4MemUsed);
@@ -1303,11 +1358,11 @@ public class RandomDecommissioningVMsScale {
             mo.getAttributes().put(v, "hotDirtyDuration", tpl4MaxDirtyDuration);
             rcMem.setConsumption(v, memVMtpl2);
             rcCPU.setConsumption(v, cpuVMs);
-            do { n = srcNodes.get(r.nextInt(srcNodes.size())); }
-            while (memVMtpl2 > srcNodesRAM.get(srcNodes.indexOf(n)) || cpuVMs > srcNodesCPU.get(srcNodes.indexOf(n)));
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (memVMtpl2 > nodesRAM.get(nodes.indexOf(n)) || cpuVMs > nodesCPU.get(nodes.indexOf(n)));
             ma.addRunningVM(v, n);
-            srcNodesRAM.set(srcNodes.indexOf(n), srcNodesRAM.get(srcNodes.indexOf(n))-rcMem.getConsumption(v));
-            srcNodesCPU.set(srcNodes.indexOf(n), srcNodesCPU.get(srcNodes.indexOf(n))-rcCPU.getConsumption(v));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(v));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(v));
         }
 
         // Add a NetworkView view
@@ -1327,27 +1382,31 @@ public class RandomDecommissioningVMsScale {
         DefaultParameters ps = new DefaultParameters();
         ps.setVerbosity(0);
         ps.setTimeLimit(60);
-        ps.setMaxEnd(15000);
+        //ps.setMaxEnd(600);
         ps.doOptimize(false);
 
         // Set the custom migration transition
         ps.getTransitionFactory().remove(ps.getTransitionFactory().getBuilder(VMState.RUNNING, VMState.RUNNING));
         ps.getTransitionFactory().add(new MigrateVMTransition.Builder());
 
-        // Migrate all VMs to random destination nodes
+        // Migrate all VMs to random nodes
         List<SatConstraint> cstrs = new ArrayList<>();
         for (int i=0; i<nbVMs; i++) {
             Node n;
-            do { n = dstNodes.get(r.nextInt(dstNodes.size())); }
-            while (rcMem.getConsumption(vms.get(i)) > dstNodesRAM.get(dstNodes.indexOf(n)) ||
-                    rcCPU.getConsumption(vms.get(i)) > dstNodesCPU.get(dstNodes.indexOf(n)));
-            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
-            dstNodesRAM.set(dstNodes.indexOf(n), dstNodesRAM.get(dstNodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
-            dstNodesCPU.set(dstNodes.indexOf(n), dstNodesCPU.get(dstNodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
-        }
 
-        // Shutdown source nodes
-        for (Node n : srcNodes) { cstrs.add(new Offline(n)); }
+            do { n = nodes.get(r.nextInt(nodes.size())); }
+            while (n.id() == ma.getVMLocation(vms.get(i)).id() ||
+                    rcMem.getConsumption(vms.get(i)) > nodesRAM.get(nodes.indexOf(n)) ||
+                    rcCPU.getConsumption(vms.get(i)) > nodesCPU.get(nodes.indexOf(n)));
+            cstrs.add(new Fence(vms.get(i), Collections.singleton(n)));
+            nodesRAM.set(nodes.indexOf(n), nodesRAM.get(nodes.indexOf(n))-rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(n), nodesCPU.get(nodes.indexOf(n))-rcCPU.getConsumption(vms.get(i)));
+
+            nodesRAM.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesRAM.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcMem.getConsumption(vms.get(i)));
+            nodesCPU.set(nodes.indexOf(ma.getVMLocation(vms.get(i))),
+                    nodesCPU.get(nodes.indexOf(ma.getVMLocation(vms.get(i))))+rcCPU.getConsumption(vms.get(i)));
+        }
 
         // Set a custom objective
         DefaultChocoScheduler sc = new DefaultChocoScheduler(ps);
@@ -1362,6 +1421,7 @@ public class RandomDecommissioningVMsScale {
             }
         } catch(Exception e) {
             e.printStackTrace();
+            saveInstanceToJSON(i, "instances/x36/instance_slow_" + nb + ".json");
         }
     }
 

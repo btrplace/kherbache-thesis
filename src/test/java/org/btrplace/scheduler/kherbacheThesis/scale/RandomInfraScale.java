@@ -1,4 +1,4 @@
-package org.btrplace.scheduler.choco;
+package org.btrplace.scheduler.kherbacheThesis;
 
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
@@ -37,7 +37,7 @@ import java.util.zip.GZIPInputStream;
 public class RandomInfraScale {
 
     String path = new File("").getAbsolutePath() +
-            "/choco/src/test/java/org/btrplace/scheduler/choco/random_infra_scale/";
+            "/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale/random_infra_scale/";
 
     @Test
     public void go_mvm() throws Exception {

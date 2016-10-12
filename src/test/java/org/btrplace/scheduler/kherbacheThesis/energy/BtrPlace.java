@@ -1,4 +1,4 @@
-package org.btrplace.scheduler.ucc15.energy;
+package org.btrplace.scheduler.kherbacheThesis.energy;
 
 import net.minidev.json.JSONObject;
 import org.btrplace.json.JSONConverterException;
@@ -32,7 +32,7 @@ import java.util.List;
 public class BtrPlace {
 
     String path = new File("").getAbsolutePath() +
-            "/src/test/java/org/btrplace/scheduler/ucc15/energy/";
+            "/src/test/java/org/btrplace/scheduler/kherbacheThesis/energy/";
 
     @Test
     public void energyTest() throws SchedulerException {

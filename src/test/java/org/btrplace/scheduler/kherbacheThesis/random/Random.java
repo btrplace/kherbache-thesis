@@ -1,4 +1,4 @@
-package org.btrplace.scheduler.ucc15.random;
+package org.btrplace.scheduler.kherbacheThesis.random;
 
 import net.minidev.json.JSONObject;
 import org.btrplace.json.JSONConverterException;
@@ -28,7 +28,7 @@ import java.util.*;
  */
 public class Random {
 
-    String path = new File("").getAbsolutePath() + "/src/test/java/org/btrplace/scheduler/ucc15/random/";
+    String path = new File("").getAbsolutePath() + "/src/test/java/org/btrplace/scheduler/kherbacheThesis/random/";
 
     public Map<VM,Node> randomTest(String fileName, Map<VM,Node> placedVMs) {
 

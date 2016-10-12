@@ -1,4 +1,4 @@
-package org.btrplace.scheduler.choco;
+package org.btrplace.scheduler.kherbacheThesis.scale;
 
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
@@ -33,13 +33,13 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 /**
- * Created by vkherbac on 16/03/16.
+ * @author Vincent Kherbache
  */
 public class RandomDecommissioningInfraScale {
 
 
     String path = new File("").getAbsolutePath() +
-            "/choco/src/test/java/org/btrplace/scheduler/choco/random_decommissioning_infra_scale/";
+            "/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale/random_decommissioning_infra_scale/";
 
     @Test
     public void go_mvm() throws Exception {
