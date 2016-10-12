@@ -1,10 +1,11 @@
-# kherbache-thesis
+# Vincent KHERBACHE's thesis - reproducible experiments documentation
+
 This repository aims to provide all the needed informations to reproduce the experiments presented on the Vincent KHERBACHE's thesis entitled "Scheduling live-migrations of virtual machines".
 
 Before fully integrating our contributions (network model, heuristic, energy objective, etc.) the experimental version of BtrPlace was called 'mVM'. Therefore, in this documentation, the term 'mVM' refers to the new version BtrPlace as described in the thesis and the terms 'NoShare' and 'BtrPlace' refer to the orginal one.
 
-* `Scheduling decisions` experiment is available in the [`random` directory](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/random).
-* `Accuracy` experiment is available in the [`accuracy` directory](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy).
+* `Scheduling decisions` experiments are available in the [`random` directory](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/random).
+* `Accuracy` experiments are available in the [`accuracy` directory](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy).
 * `Energy` experiment is available in the [`energy` directory](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/energy).
 * `Power capping` experiment is available in the [`capping` directory](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/capping).
 * `Scalability` experiments are available in the [`scale` directory](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale). As this experiment only consists to evaluate the scheduler computation time, there is nothing to execute/reproduce on *a real infrastructure*. However, you can execute the tests on your own machine to compare the results. For comparison, the results presented in the paper were executed on an Intel CPU i7-4600U @ 2.10Ghz.
