@@ -1,4 +1,4 @@
-# Vincent KHERBACHE's thesis - reproducible experiments documentation
+# Reproducible experiments documentation
 
 This repository aims to provide all the needed informations to reproduce the experiments presented on the Vincent KHERBACHE's thesis entitled "Scheduling live-migrations of virtual machines".
 
