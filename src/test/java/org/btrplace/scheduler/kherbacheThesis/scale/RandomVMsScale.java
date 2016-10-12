@@ -40,12 +40,12 @@ public class RandomVMsScale {
             "/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale/random_vms_scale/";
 
     @Test
-    public void go_mvm() throws Exception {
+    public void run_mvm() throws Exception {
 
-        for (int in=59; in<69; in++) {
+        for (int in=1; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
             int nb = 10;
-            if (in == 59) nb+=2;
+            if (in == 1) nb+=10;
             SolvingStatistics ss = null;
             for (int i = 0; i < nb; i++) {
                 ss = schedule_plan("instances/x2/instance_" + in + ".json");
@@ -101,6 +101,74 @@ public class RandomVMsScale {
     }
 
     @Test
+    public void run_btrplace() throws Exception {
+
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            if (in == 1) nb+=10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x1/instance_slow_" + in + ".json");
+                if (ss != null) res.append("1;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x1/no-share_slow_"+in+".csv", res);
+        }
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x2/instance_slow_" + in + ".json");
+                if (ss != null) res.append("2;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x2/no-share_slow_"+in+".csv", res);
+        }
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x4/instance_slow_" + in + ".json");
+                if (ss != null) res.append("4;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x4/no-share_slow_"+in+".csv", res);
+        }
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x8/instance_slow_" + in + ".json");
+                if (ss != null) res.append("8;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x8/no-share_slow_"+in+".csv", res);
+        }
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x18/instance_slow_" + in + ".json");
+                if (ss != null) res.append("18;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x18/no-share_slow_"+in+".csv", res);
+        }
+    }
+
+    @Test
+    public void create_plans() throws Exception {
+        for (int i=1; i<101; i++) {
+            generate_plan_x1(i);
+            generate_plan_x2(i);
+            generate_plan_x4(i);
+            generate_plan_x8(i);
+            generate_plan_x18(i);
+            //generate_plan_x36(i);
+        }
+    }
+
+    //@Test
     public void go_parallel() throws Exception {
 
         for (int in=1; in<51; in++) {
@@ -153,91 +221,6 @@ public class RandomVMsScale {
                 if (ss != null) res.append("18;" + duration(ss) + ";mVM;" + planDuration(ss) + "\n");
             }
             if (ss != null) saveToCSV("mvm/x18/btrplace_"+in+".csv", res);
-        }
-    }
-
-    @Test
-    public void go_btrplace() throws Exception {
-
-        for (int in=51; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            if (in == 1) nb+=10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x1/instance_slow_" + in + ".json");
-                if (ss != null) res.append("1;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x1/no-share_slow_"+in+".csv", res);
-        }
-        for (int in=51; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x2/instance_slow_" + in + ".json");
-                if (ss != null) res.append("2;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x2/no-share_slow_"+in+".csv", res);
-        }
-        for (int in=51; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x4/instance_slow_" + in + ".json");
-                if (ss != null) res.append("4;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x4/no-share_slow_"+in+".csv", res);
-        }
-        for (int in=51; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x8/instance_slow_" + in + ".json");
-                if (ss != null) res.append("8;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x8/no-share_slow_"+in+".csv", res);
-        }
-        for (int in=51; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x18/instance_slow_" + in + ".json");
-                if (ss != null) res.append("18;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x18/no-share_slow_"+in+".csv", res);
-        }
-    }
-
-    @Test
-    public void go_create() throws Exception {
-        for (int i=51; i<101; i++) {
-            generate_plan_x1(i);
-            generate_plan_x2(i);
-            generate_plan_x4(i);
-            generate_plan_x8(i);
-            generate_plan_x18(i);
-            //generate_plan_x36(i);
-        }
-    }
-
-    @Test
-    public void go_ninja() throws Exception {
-
-        //generate_plan_x18(0);
-
-        for (int in=1; in<51; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x18/instance_" + in + ".json");
-                if (ss != null) res.append("18;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x18/no-share_"+in+".csv", res);
         }
     }
 

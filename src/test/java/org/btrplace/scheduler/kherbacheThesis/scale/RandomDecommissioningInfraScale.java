@@ -42,7 +42,7 @@ public class RandomDecommissioningInfraScale {
             "/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale/random_decommissioning_infra_scale/";
 
     @Test
-    public void go_mvm() throws Exception {
+    public void run_mvm() throws Exception {
 
         for (int in=1; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
@@ -54,7 +54,7 @@ public class RandomDecommissioningInfraScale {
                 if (ss != null) { res.append("1;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
                 else { break; }
             }
-            if (ss != null) saveToCSV("mvm-four/x1/four-steps_"+in+".csv", res);
+            if (ss != null) saveToCSV("mvm/x1/single-step_"+in+".csv", res);
         }
         for (int in=1; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
@@ -65,7 +65,7 @@ public class RandomDecommissioningInfraScale {
                 if (ss != null) { res.append("2;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
                 else { break; }
             }
-            if (ss != null) saveToCSV("mvm-four/x2/four-steps_"+in+".csv", res);
+            if (ss != null) saveToCSV("mvm/x2/single-step_"+in+".csv", res);
         }
         for (int in=1; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
@@ -76,7 +76,7 @@ public class RandomDecommissioningInfraScale {
                 if (ss != null) { res.append("4;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
                 else { break; }
             }
-            if (ss != null) saveToCSV("mvm-four/x4/four-steps_"+in+".csv", res);
+            if (ss != null) saveToCSV("mvm/x4/single-step_"+in+".csv", res);
         }
         for (int in=1; in<101; in++) {
             StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN;RUN\n");
@@ -87,11 +87,68 @@ public class RandomDecommissioningInfraScale {
                 if (ss != null) { res.append("10;" + duration(ss) + ";mVM;" + planDuration(ss) + ';' + in + "\n"); }
                 else { break; }
             }
-            if (ss != null) saveToCSV("mvm-four/x10/four-steps_"+in+".csv", res);
+            if (ss != null) saveToCSV("mvm/x10/single-step_"+in+".csv", res);
         }
     }
 
     @Test
+    public void run_btrplace() throws Exception {
+        
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            if (in == 1) nb+=5;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x1/instance_" + in + ".json");
+                if (ss != null) res.append("1;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x1/no-share_"+in+".csv", res);
+        }
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x2/instance_" + in + ".json");
+                if (ss != null) res.append("2;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x2/no-share_"+in+".csv", res);
+        }
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x4/instance_" + in + ".json");
+                if (ss != null) res.append("4;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x4/no-share_"+in+".csv", res);
+        }
+        for (int in=1; in<101; in++) {
+            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
+            int nb = 10;
+            SolvingStatistics ss = null;
+            for (int i = 0; i < nb; i++) {
+                ss = schedule_btrplace_plan("instances/x10/instance_" + in + ".json");
+                if (ss != null) res.append("10;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
+            }
+            if (ss != null) saveToCSV("btrplace/x10/no-share_"+in+".csv", res);
+        }
+    }
+
+    @Test
+    public void create_plans() throws Exception {
+        for (int i=1; i<101; i++) {
+            generate_plan_x1(i);
+            generate_plan_x2(i);
+            generate_plan_x4(i);
+            generate_plan_x10(i);
+        }
+    }
+
+
+    //@Test
     public void go_parallel() throws Exception {
 
         for (int in=1; in<51; in++) {
@@ -137,61 +194,7 @@ public class RandomDecommissioningInfraScale {
         }
     }
 
-    @Test
-    public void go_btrplace() throws Exception {
-        
-        for (int in=51; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            if (in == 1) nb+=5;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x1/instance_" + in + ".json");
-                if (ss != null) res.append("1;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x1/no-share_"+in+".csv", res);
-        }
-        for (int in=51; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x2/instance_" + in + ".json");
-                if (ss != null) res.append("2;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x2/no-share_"+in+".csv", res);
-        }
-        for (int in=51; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x4/instance_" + in + ".json");
-                if (ss != null) res.append("4;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x4/no-share_"+in+".csv", res);
-        }
-        for (int in=51; in<101; in++) {
-            StringBuilder res = new StringBuilder("SIZE;DURATION;SCHEDULER;PLAN\n");
-            int nb = 10;
-            SolvingStatistics ss = null;
-            for (int i = 0; i < nb; i++) {
-                ss = schedule_btrplace_plan("instances/x10/instance_" + in + ".json");
-                if (ss != null) res.append("10;" + duration(ss) + ";BtrPlace;" + planDuration(ss) + "\n");
-            }
-            if (ss != null) saveToCSV("btrplace/x10/no-share_"+in+".csv", res);
-        }
-    }
 
-    @Test
-    public void go_create() throws Exception {
-        for (int i=51; i<101; i++) {
-            generate_plan_x1(i);
-            generate_plan_x2(i);
-            generate_plan_x4(i);
-            generate_plan_x10(i);
-        }
-    }
 
     public double duration(SolvingStatistics s) throws Exception {
         SolutionStatistics x = s.getSolutions().get(0);

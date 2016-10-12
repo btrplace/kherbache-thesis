@@ -138,6 +138,7 @@
                         <include>**/capping/*.java</include>
                         <include>**/energy/*.java</include>
                         <include>**/random/*.java</include>
+                        <include>**/scale/*.java</include>
                     </includes>
                 </configuration>
             </plugin>
