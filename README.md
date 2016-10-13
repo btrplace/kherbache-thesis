@@ -51,7 +51,7 @@ mvn "-Dtest=**/scale/RandomInfraScale#create_plans" compiler:testCompile surefir
 mvn "-Dtest=**/scale/RandomVMsScale#create_plans" compiler:testCompile surefire:test
 ```
 
-This will automatically replace the original JSON instances files.
+This will automatically replace the provided JSON instances files.
 
 
 # Simulation experiments
