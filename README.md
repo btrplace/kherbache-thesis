@@ -381,7 +381,7 @@ First, retrieve and compile the correct version of the BtrPlace scheduler:
 
 ``` shell
 git clone --depth 1 https://github.com/btrplace/scheduler.git
-cd scheduler-UCC-15
+cd scheduler
 git checkout 8db028b43ca796613af3f7147b250755af31409d
 mvn -Dmaven.test.skip=true install
 cd ../
