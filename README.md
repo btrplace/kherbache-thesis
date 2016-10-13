@@ -14,7 +14,7 @@ As these two last experiments only consists to evaluate the scheduler accuracy a
 
 You can either chose to use the provided JSON files to execute the experiments or to generate them by yourself using the corresponding java test classes (procedure described below).
 
-PS: If you want the R scripts used to generate the plots in the thesis, feel free to ask me (vincent@kherbache.fr) ;-).
+PS: If you are interested by the R scripts used to generate the Figures shown in the thesis, feel free to ask me (vincent@kherbache.fr) ;-).
 
 ## Get or generate the desired JSON files
 
