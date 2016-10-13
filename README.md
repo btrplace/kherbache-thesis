@@ -21,7 +21,7 @@ Each JSON file describes a full reconfiguration plan of a particular scenario ge
 <!--
 [here](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis).
 -->
-Alternatively, you can regenerate them from the current git repository, just do the following (you'll need to install `maven` first):
+Alternatively, you can regenerate them from the current git repository, just do the following (you'll need to install the correct version of BtrPlace first, the procedure is described in the first step [here](#get-the-btrplace-plan-executor-for-g5k)):
 
 ``` shell
 # Clone the repository if you don't have it
