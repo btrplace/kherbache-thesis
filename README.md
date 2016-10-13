@@ -193,7 +193,7 @@ MAVEN_OPTS="-server -Xmx2G -Xms2G" mvn "-Dtest=**/scale/RandomVMsScale#run_mvm+r
 ## Setup the environment
 
 All the experiments have been executed on the [Grid'5000 infrastructure](https://www.grid5000.fr/mediawiki/index.php/Grid5000:Home) (*g5k*), so you must have an account to be able to reproduce the experiments.
-We used both `Griffon` and `Graphene` clusters from the Nancy site ([network](https://www.grid5000.fr/mediawiki/index.php/Nancy:Network)/[hardware](https://www.grid5000.fr/mediawiki/index.php/Nancy:Hardware)).
+We used both `Griffon` and `Graphene` clusters from the Nancy site, you can check and compare the corresponding [network](https://www.grid5000.fr/mediawiki/index.php/Nancy:Network) and [hardware](https://www.grid5000.fr/mediawiki/index.php/Nancy:Hardware) details.
 
 
 ### Create a custom image for g5k nodes
@@ -306,7 +306,7 @@ Generally the script `/path/to/sleeping-script` contains an *infinite sleeping l
 
 ### Retrieve deployments scripts
 
-You need to retrieve the deployments scripts located in the local [`utils/scripts-g5k` subfolder](https://github.com/btrplace/kherbache-thesis/tree/master/utils/scripts-g5k).
+You need to retrieve the deployments scripts located in the [`utils/scripts-g5k`](https://github.com/btrplace/kherbache-thesis/tree/master/utils/scripts-g5k) directory.
 
 Alternatively, you can retrieve them from the [original repository](https://github.com/vincent-k/scripts-g5k) in a most recent version with more features. However the scripts provided in this repository are cleaned and ready to use so we strongly recommand using them.
 
@@ -481,8 +481,8 @@ griffon-61  node#1
 Each entry must contains first the real node/VM name and then the corresponding BtrPlace name **separated by a tabulation**.
 The BtrPlace numbering is defined incrementally according to the node/VM creation order (see the corresponding Java test classes to verify the order).
 
-If necessary, start the traffic shaping on desired nodes by executing the script `traffic_shaping.sh` located in the [sub-directory `utils/`](https://github.com/btrplace/migrations-UCC-15/blob/master/utils).
-The default parameters will limit the bandwidth to 500 Mbit/sec which corresponds to the traffic shaping applied in the `Performance` experiment.
+If necessary, start the traffic shaping on desired nodes by executing the script `traffic_shaping.sh` located in the [`utils/`](https://github.com/btrplace/kherbache-thesis/blob/master/utils) directory.
+The default parameters will limit the bandwidth to 500 Mbit/sec which corresponds to the traffic shaping applied in the `Scheduling` experiments.
 
 
 
