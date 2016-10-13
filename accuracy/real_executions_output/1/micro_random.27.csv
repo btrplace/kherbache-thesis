@@ -1,0 +1,11 @@
+ACTION;START;END;RUN
+{action=migrate(vm=vm#1, from=node#2, to=node#3, bw=1000)};1436479526;1436479546;27
+{action=migrate(vm=vm#8, from=node#1, to=node#2, bw=500)};1436479526;1436479583;27
+{action=migrate(vm=vm#5, from=node#3, to=node#1, bw=500)};1436479526;1436479590;27
+{action=migrate(vm=vm#2, from=node#0, to=node#3, bw=500)};1436479546;1436479584;27
+{action=migrate(vm=vm#3, from=node#1, to=node#3, bw=500)};1436479590;1436479628;27
+{action=migrate(vm=vm#0, from=node#3, to=node#1, bw=500)};1436479590;1436479634;27
+{action=migrate(vm=vm#9, from=node#3, to=node#2, bw=1000)};1436479634;1436479663;27
+{action=migrate(vm=vm#6, from=node#0, to=node#1, bw=500)};1436479634;1436479690;27
+{action=migrate(vm=vm#7, from=node#0, to=node#3, bw=500)};1436479690;1436479746;27
+{action=migrate(vm=vm#4, from=node#0, to=node#1, bw=500)};1436479746;1436479784;27
