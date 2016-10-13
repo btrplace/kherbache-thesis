@@ -57,7 +57,7 @@ This will automatically replace the original JSON instances files.
 ## Accuracy experiments
 
 The random scenarios used for all accuracy experiments are provided as JSON files in the [`accuracy/input`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/input) directory.
-In order to evaluate the accuracy of the desired migration models, the comparison is essentially based on the output of the mVM `Scheduling decisions` experiments. The resulting CSV are provided in the [`accuracy/real_executions_output`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/real_executions_output) folder but you can generate your own by executing the JSON instances as described below in the [Real experiments section](#real-experiments-grid5000)) of this documentation.
+In order to evaluate the accuracy of the desired migration models, the comparison is essentially based on the output of the mVM `Scheduling decisions` experiments. The resulting CSV are provided in the [`accuracy/real_executions_output`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/real_executions_output) folder but you can generate your own by executing the JSON instances as described below in the [Real experiments section](#real-experiments-grid5000) of this documentation.
 
 You can execute most of the simulations (`mVM`, `noDP`, `noShare`) with the [g5k BtrPlace executor](https://github.com/btrplace/g5k-executor), by using the default migration script that is configured to sleep instead of executing migrations.
 A complete usage example is also given [below](#get-the-btrplace-plan-executor-for-g5k).
