@@ -2,13 +2,15 @@
 
 This repository aims to provide all the needed informations to reproduce the experiments presented on the Vincent KHERBACHE's thesis entitled "Scheduling live-migrations of virtual machines".
 
-Before fully integrating our contributions (network model, heuristic, energy objective, etc.) the experimental version of BtrPlace was called 'mVM'. Therefore, in this documentation, the term 'mVM' refers to the new version BtrPlace as described in the thesis and the terms 'NoShare' and 'BtrPlace' refer to the orginal one.
+Before fully integrating our contributions (network model, heuristic, energy objective, etc.) the experimental version of BtrPlace was called `mVM`. Therefore, in this documentation, the term `mVM` refers to the new version BtrPlace as described in the thesis and the terms `NoShare` and `BtrPlace` refer to the orginal one.
 
-* `Scheduling decisions` experiments are available in the [`random` directory](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/random).
-* `Accuracy` experiments are available in the [`accuracy` directory](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy).
-* `Energy` experiment is available in the [`energy` directory](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/energy).
-* `Power capping` experiment is available in the [`capping` directory](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/capping).
-* `Scalability` experiments are available in the [`scale` directory](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale). As this experiment only consists to evaluate the scheduler computation time, there is nothing to execute/reproduce on *a real infrastructure*. However, you can execute the tests on your own machine to compare the results. For comparison, the results presented in the paper were executed on an Intel CPU i7-4600U @ 2.10Ghz.
+* `Scheduling decisions` experiments are available in the [`src/.../scheduling/`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scheduling) directory.
+* `Energy` experiment is available in the [`src/.../energy`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/energy) directory.
+* `Power capping` experiment is available in the [`src/.../capping`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/capping) directory.
+* `Accuracy` experiments are available in the [`accuracy/`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy) directory.
+* `Scalability` experiments are available in the [`src/.../scale`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale) directory.
+
+As these two last experiments only consists to evaluate the scheduler accuracy and computation time, there is nothing to execute/reproduce on *a real infrastructure*. However, you can execute the tests on your own machine to compare the results. For comparison purpose, the scalability results presented in the paper were executed on an Intel CPU i7-4600U @ 2.10Ghz using 2GiB for the Java stack.
 
 You can either chose to use the provided JSON files to execute the experiments or to generate them by yourself using the corresponding java test classes (procedure described below).
 
@@ -26,15 +28,15 @@ Alternatively, you can regenerate them from the current git repository, just do 
 git clone --depth 1 https://github.com/btrplace/kherbache-thesis.git
 cd kherbache-thesis
 
-# Create instances of the 'Power Capping' experiment
+# Create the instance of the 'Power Capping' experiment
 mvn "-Dtest=**/capping/mVM#cappingTest" compiler:testCompile surefire:test
 
 # Create instances of the 'Energy' experiment, both for the new and the old version of BtrPlace
 mvn "-Dtest=**/energy/mVM#energyTest" compiler:testCompile surefire:test
 mvn "-Dtest=**/energy/BtrPlace#energyTest" compiler:testCompile surefire:test
 
-# Generate 50 (new) random instances used for both the 'Scheduling decisions' and the 'Accuracy' experiments
-mvn "-Dtest=**/random/Random#runRandom" compiler:testCompile surefire:test
+# Generate 50 (new) random instances used for the 'Scheduling decisions' (instances execution outputs are also used in the 'Accuracy' experiments)
+mvn "-Dtest=**/scheduling/Scheduling#create_plans" compiler:testCompile surefire:test
 
 # Generate 100 (new) random instances used for the 'Scalability' experiments
 ## Decommissioning scenario - Infrastructure scaling:
@@ -54,12 +56,13 @@ This will automatically replace the original JSON instances files.
 
 ## Accuracy experiments
 
-The scenarios used in all accuracy experiments are provided in the `accuracy/input` directory.
+The random scenarios used for all accuracy experiments are provided as JSON files in the [`accuracy/input`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/input) directory.
+In order to evaluate the accuracy of the desired migration models, the comparison is essentially based on the output of the mVM `Scheduling decisions` experiments. The resulting CSV are provided in the [`accuracy/real_executions_output`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/real_executions_output) folder but you can generate your own by executing the JSON instances as described below in the [Real experiments section](# Real experiments (Grid'5000)) of this documentation.
 
-You can execute them using the [g5k BtrPlace executor](https://github.com/btrplace/g5k-executor), by using the default migration script that is configured to sleep instead of executing migrations.
-
-The `noshare` and `noDP` models can be easily reproduced by customizing BtrPlace (i.e. removing the network view (`noShare` model) and ignoring the dirty pages informations (`noDP` model)).
-To do so, good working examples are given in the Java sources files of the `Scalability` experiments.
+You can execute most of the simulations (`mVM`, `noDP`, `noShare`) with the [g5k BtrPlace executor](https://github.com/btrplace/g5k-executor), by using the default migration script that is configured to sleep instead of executing migrations.
+A complete usage example is also given [below](### Get the BtrPlace plan executor for g5k).
+The `noshare` and `noDP` models can be easily reproduced by customizing BtrPlace (i.e. removing the network view (`noShare` model) and also ignoring the dirty pages informations (`noDP` model)).
+To do so, good working examples are given in the [Java sources files of the `Scalability`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale) experiments.
 
 The procedure to execute BtrPlace instances in SimGrid is described below:
 
@@ -112,19 +115,11 @@ make test
 
 ### Run the scenarios (feel free to automate this)
 
-The input JSON instances files are located in the [input](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/input) directory. They can also be retrieved from the [random]((https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/random)) folder (as they are basically the same files --> read the thesis ;-)) OR they can be fully regenerated as mentioned above.
+The input JSON instances files are located in the [accuracy/input](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/input) directory. They can also be retrieved from the [src/.../scheduling]((https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scheduling)) folder (as `accuracy` experiments are based on `scheduling` plans) *OR* they can be fully regenerated as mentioned above.
 
-Use the new `migrate_vm` binary to execute the scenarios, like this:
+The topology used is described in the file `accuracy/simgrid/topology.xml`, there is a representation of it (more details are provided in the thesis):
 
-```
-./migrate_vm topology.xml results.1.csv ../input/random.1.json
-...
-./migrate_vm topology.xml results.50.csv ../input/random.50.json
-```
-
-The topology used is described in the file `topology.xml`, there is a representation (also described in the thesis):
-
-```
+``` txt
  * host # 0 ---500 Mb/s-----.   .--- 1 Gb/s ----- host # 2
  *                           \ /
  *                    network X switch
@@ -132,10 +127,19 @@ The topology used is described in the file `topology.xml`, there is a representa
  * host # 1 ---500 Mb/s----./   \.--- 1 Gb/s ----- host # 3
 ```
 
+Then, use the new `migrate_vm` binary to execute the scenarios, like this:
 
-# Scalability experiments
+``` shell
+./migrate_vm topology.xml results.1.csv ../input/random.1.json
+...
+./migrate_vm topology.xml results.50.csv ../input/random.50.json
+```
 
-Here is the structure of the Java `scale` directory (empty subdirs JSON files are not shown):
+
+
+## Scalability experiments
+
+Here is the structure of the Java `scale` directory (empty output subdirs and JSON files are not shown):
 
 ``` txt
 scale
@@ -161,14 +165,14 @@ scale
 └── RandomVMsScale.java
 ```
 
-- The JSON instances files for each type of experiment are provided in the `instances` directories.
-- The result CSV files will appear into the folders `btrplace` and `mvm`, under directories with the name of the scale factor `x1`, `x2`, etc.
+* The JSON instances files for each type of experiment are provided in the `instances` directories.
+* The result CSV files will appear into the folders `btrplace` and `mvm` under directories with the name of the scale factor used (`x1`, `x2`, etc).
 
 <!-- The files reffering to the non-optimized version of mVM are labelled `mvm-four` (or `four-steps`), where `single-step` or just `mVM` refer to the optimized version (MaxBandwidth optimisation).
 - BtrPlace corresponds to the `no-share` model described in the thesis.
 -->
 
-To execute the `Scalability` experiments, we recommend to use at least 2 GiB RAM for JVM memory allocation pool. Here is how to execute `BtrPlace` and `mVM` scale tests consecutively for each experiment:
+To execute the `Scalability` experiments, we recommend to use at least 2 GiB RAM for JVM memory allocation pool. Here is how to execute `mVM` and `BtrPlace` scale tests consecutively for each experiment:
 
 ``` shell
 # Decommissioning scenario - Infrastructure scaling:
