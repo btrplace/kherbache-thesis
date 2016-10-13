@@ -5,10 +5,10 @@ This repository aims to provide all the needed informations to reproduce the exp
 Before fully integrating our contributions (network model, heuristic, energy objective, etc.) the experimental version of BtrPlace was called `mVM`. Therefore, in this documentation, the term `mVM` refers to the new version BtrPlace as described in the thesis and the terms `NoShare` and `BtrPlace` refer to the orginal one.
 
 * `Scheduling decisions` experiments are available in the [`src/.../scheduling/`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scheduling) directory.
-* `Energy` experiment is available in the [`src/.../energy`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/energy) directory.
-* `Power capping` experiment is available in the [`src/.../capping`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/capping) directory.
+* `Energy` experiment is available in the [`src/.../energy/`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/energy) directory.
+* `Power capping` experiment is available in the [`src/.../capping/`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/capping) directory.
 * `Accuracy` experiments are available in the [`accuracy/`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy) directory.
-* `Scalability` experiments are available in the [`src/.../scale`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale) directory.
+* `Scalability` experiments are available in the [`src/.../scale/`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale) directory.
 
 As these two last experiments only consists to evaluate the scheduler accuracy and computation time, there is nothing to execute/reproduce on *a real infrastructure*. However, you can execute the tests on your own machine to compare the results. For comparison purpose, the scalability results presented in the paper were executed on an Intel CPU i7-4600U @ 2.10Ghz using 2GiB for the Java stack.
 
@@ -57,10 +57,10 @@ This will automatically replace the original JSON instances files.
 ## Accuracy experiments
 
 The random scenarios used for all accuracy experiments are provided as JSON files in the [`accuracy/input`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/input) directory.
-In order to evaluate the accuracy of the desired migration models, the comparison is essentially based on the output of the mVM `Scheduling decisions` experiments. The resulting CSV are provided in the [`accuracy/real_executions_output`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/real_executions_output) folder but you can generate your own by executing the JSON instances as described below in the [Real experiments section](# Real experiments (Grid'5000)) of this documentation.
+In order to evaluate the accuracy of the desired migration models, the comparison is essentially based on the output of the mVM `Scheduling decisions` experiments. The resulting CSV are provided in the [`accuracy/real_executions_output`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/real_executions_output) folder but you can generate your own by executing the JSON instances as described below in the [Real experiments section](#real-experiments-grid5000)) of this documentation.
 
 You can execute most of the simulations (`mVM`, `noDP`, `noShare`) with the [g5k BtrPlace executor](https://github.com/btrplace/g5k-executor), by using the default migration script that is configured to sleep instead of executing migrations.
-A complete usage example is also given [below](### Get the BtrPlace plan executor for g5k).
+A complete usage example is also given [below](#get-the-btrplace-plan-executor-for-g5k).
 The `noshare` and `noDP` models can be easily reproduced by customizing BtrPlace (i.e. removing the network view (`noShare` model) and also ignoring the dirty pages informations (`noDP` model)).
 To do so, good working examples are given in the [Java sources files of the `Scalability`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale) experiments.
 
