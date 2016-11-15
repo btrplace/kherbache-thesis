@@ -10,11 +10,11 @@ Before fully integrating our contributions (network model, heuristic, energy obj
 * `Accuracy` experiments are available in the [`accuracy/`](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy) directory.
 * `Scalability` experiments are available in the [`src/.../scale/`](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scale) directory.
 
-As these two last experiments only consists to evaluate the scheduler accuracy and computation time, there is nothing to execute/reproduce on *a real infrastructure*. However, you can execute the tests on your own machine to compare the results. For comparison purpose, the scalability results presented in the paper were executed on an Intel CPU i7-4600U @ 2.10Ghz using 2GiB for the Java stack.
+As these two last experiments only consist to evaluate the scheduler accuracy and computation time, there is nothing to execute or reproduce on *a real infrastructure*. However, you can execute the tests on your own machine to compare the results. For comparison purpose, the scalability results presented in the paper were executed on an Intel CPU i7-4600U @ 2.10Ghz using 2GiB for the Java stack.
 
 You can either chose to use the provided JSON files to execute the experiments or to generate them by yourself using the corresponding java test classes (procedure described below).
 
-PS: If you are interested by the R scripts used to generate the Figures shown in the thesis, feel free to ask me: vincent@kherbache.fr ;-).
+PS: If you are interested by the R scripts used to generate the Figures shown in the thesis, feel free to ask me: vincent AT kherbache DOT fr ;-).
 
 ## Get or generate the desired JSON files
 
