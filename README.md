@@ -117,7 +117,7 @@ make test
 
 ### Run the scenarios (feel free to automate this)
 
-The input JSON instances files are located in the [accuracy/input](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/input) directory. They can also be retrieved from the [src/.../scheduling]((https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scheduling)) folder (as `accuracy` experiments are based on `scheduling` plans) *OR* they can be fully regenerated as mentioned above.
+The input JSON instances files are located in the [accuracy/input](https://github.com/btrplace/kherbache-thesis/tree/master/accuracy/input) directory. They can also be retrieved from the [src/.../scheduling](https://github.com/btrplace/kherbache-thesis/tree/master/src/test/java/org/btrplace/scheduler/kherbacheThesis/scheduling) folder (as `accuracy` experiments are based on `scheduling` plans) *OR* they can be fully regenerated as mentioned above.
 
 The topology used is described in the file `accuracy/simgrid/topology.xml`, here is a representation of it (more details are provided in the thesis):
 
